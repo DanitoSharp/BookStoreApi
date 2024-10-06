@@ -21,7 +21,7 @@ namespace BookStoreApi.Controllers
         public async Task<IActionResult> AllBooks()
         {
             string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                if (userId is null) return BadRequest("User does not exist!");
+            if (userId is null) return BadRequest("User does not exist!");
 
             var items = await Repo.GetAllBooks();
 
@@ -31,7 +31,7 @@ namespace BookStoreApi.Controllers
         public async Task<IActionResult> GetBookById(int id)
         {
             string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                if (userId is null) return BadRequest("User does not exist!");
+            if (userId is null) return BadRequest("User does not exist!");
 
             var items = await Repo.GetBooksById(id);
 
@@ -45,9 +45,9 @@ namespace BookStoreApi.Controllers
             string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId is null) return BadRequest("User does not exist!");
 
-            var item = await Repo.CreateBook(book, userId); 
-            
-            return CreatedAtAction(nameof(CreateBook), new{Id = item!.Id}, item);
+            var item = await Repo.CreateBook(book, userId);
+
+            return CreatedAtAction(nameof(CreateBook), new { Id = item!.Id }, item);
         }
 
         [Authorize]
@@ -72,14 +72,28 @@ namespace BookStoreApi.Controllers
             if (userId is null) return BadRequest("User does not exist!");
 
             var isDeleted = await Repo.DeleteBook(id, userId);
-            
-            if(isDeleted)
-            return NoContent();
-            
+
+            if (isDeleted)
+                return NoContent();
+
             return NotFound();
 
         }
 
-        
+        [HttpPost("{id:int}/upload-book-cover")]
+        public async Task<IActionResult> UploadBookCover([FromQuery]int id, [FromForm] IFormFile file)
+        {
+            
+            var fileUrl = await Repo.UploadBookCover(id, file, Request);
+
+            if (fileUrl == "No file was uploaded.") return BadRequest("No file was uploaded.");
+            if (fileUrl == "Only JPG and PNG image formats are supported.") return BadRequest("Only JPG and PNG image formats are supported.");
+            if (fileUrl == "Bad Request") return BadRequest();
+
+            return Ok(new { FilePath = fileUrl });
+        }
+
+
+
     }
 }

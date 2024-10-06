@@ -25,4 +25,7 @@ public interface IBookRepository
     Task<bool> Dislike(int id);
     Task<bool> RemoveDislike(int id);
 
+
+    Task<string> UploadBookCover(int bookId, IFormFile file, HttpRequest request);
+
 }

@@ -49,10 +49,12 @@ builder.Services.AddSqlite<ApplicationDbContext>(connectionStr);
 
 builder.Services.AddTransient<IBookRepository, BookRepository>();
 builder.Services.AddTransient<ICommentRepository, CommentRepository>();
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 builder.Services.AddIdentity<User, IdentityRole>(
     options =>
     {
+        options.Password.RequiredLength = 8;
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequiredUniqueChars = 0;
     }
@@ -98,6 +100,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseStaticFiles();
 
 app.MapControllers();
 
