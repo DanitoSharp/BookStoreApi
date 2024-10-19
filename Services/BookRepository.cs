@@ -28,7 +28,8 @@ public class BookRepository : IBookRepository
 
     public async Task<Book?> CreateBook(BookDTO book, string userId)
     {
-        var item = new Book(Dbcontext)
+        var user = await UserM.FindByEmailAsync(userId);
+        var item = new Book()
         {
             Title = book.Title,
             Description = book.Description,
@@ -37,10 +38,10 @@ public class BookRepository : IBookRepository
             DateAdded = DateTime.Now,
             GenreId = book.GenreId,
             Genre = Dbcontext.Genre.Find(book.GenreId),
-            UserId = userId,
+            UserId = user!.Id,
+            User = user
         };
 
-        item.User = await UserM.FindByEmailAsync(userId);
 
         Dbcontext.Books.Add(item);
         await SaveChanges();
@@ -84,7 +85,7 @@ public class BookRepository : IBookRepository
 
         if (item is null) return null;
 
-        var newItem = new Book(Dbcontext)
+        var newItem = new Book()
         {
             Id = id,
             Title = book.Title,
@@ -122,7 +123,7 @@ public class BookRepository : IBookRepository
     {
         var item = await Dbcontext.Books.FindAsync(id);
         if (item is null) return false;
-        item.AddLike();
+        item.Likes = item.Likes++;
 
         Dbcontext.Books
         .Entry(item).CurrentValues.SetValues(item);
@@ -194,7 +195,7 @@ public class BookRepository : IBookRepository
         }
 
         // Return the file path or URL of the uploaded photo
-        var fileUrl = $"{request.Scheme}://{request.Host}/images/profile-photos/{uniqueFileName}";
+        var fileUrl = $"{request.Scheme}://{request.Host}/images/book-cover-photos/{uniqueFileName}";
 
         var book = Dbcontext.Books.Find(bookId);
 

@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Daniel Ekeleme\\Documents\\Dotnet\\WebApi\\BookStoreApi\\wwwroot\\images\\book-cover-photos\\2de2475c-fb2b-4a4c-91f1-7f25f3558fa0.jpg",
+      "PackagePath": "staticwebassets\\images\\book-cover-photos\\2de2475c-fb2b-4a4c-91f1-7f25f3558fa0.jpg"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.BookStoreApi.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.BookStoreApi.props",
+      "PackagePath": "build\\BookStoreApi.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.BookStoreApi.props",
+      "PackagePath": "buildMultiTargeting\\BookStoreApi.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.BookStoreApi.props",
+      "PackagePath": "buildTransitive\\BookStoreApi.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

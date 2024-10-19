@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BookStoreApi.DataContext.Migrations
 {
     /// <inheritdoc />
-    public partial class initialCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -189,8 +189,7 @@ namespace BookStoreApi.DataContext.Migrations
                     DisLikes = table.Column<int>(type: "INTEGER", nullable: false),
                     UserId = table.Column<string>(type: "TEXT", nullable: true),
                     GenreId = table.Column<int>(type: "INTEGER", nullable: false),
-                    DateAdded = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UserId1 = table.Column<string>(type: "TEXT", nullable: true)
+                    DateAdded = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -198,12 +197,6 @@ namespace BookStoreApi.DataContext.Migrations
                     table.ForeignKey(
                         name: "FK_Books_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Books_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -224,8 +217,7 @@ namespace BookStoreApi.DataContext.Migrations
                     Likes = table.Column<int>(type: "INTEGER", nullable: false),
                     BookId = table.Column<int>(type: "INTEGER", nullable: false),
                     UserId = table.Column<string>(type: "TEXT", nullable: true),
-                    DateAdded = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    BookId1 = table.Column<int>(type: "INTEGER", nullable: true)
+                    DateAdded = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -234,19 +226,13 @@ namespace BookStoreApi.DataContext.Migrations
                         name: "FK_Comments_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Comments_Books_BookId",
                         column: x => x.BookId,
                         principalTable: "Books",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Comments_Books_BookId1",
-                        column: x => x.BookId1,
-                        principalTable: "Books",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.InsertData(
@@ -266,16 +252,16 @@ namespace BookStoreApi.DataContext.Migrations
                     { 10, "Health and Wellness" },
                     { 11, "Historical Fiction" },
                     { 12, "Horror" },
-                    { 14, "Literary Fiction" },
-                    { 15, "Memoir" },
-                    { 16, "Mystery" },
-                    { 17, "Romance" },
-                    { 18, "Science" },
-                    { 19, "Science Fiction" },
-                    { 20, "Self-Help" },
-                    { 21, "Thriller" },
-                    { 22, "Travel" },
-                    { 23, "Young Adult" }
+                    { 13, "Literary Fiction" },
+                    { 14, "Memoir" },
+                    { 15, "Mystery" },
+                    { 16, "Romance" },
+                    { 17, "Science" },
+                    { 18, "Science Fiction" },
+                    { 19, "Self-Help" },
+                    { 20, "Thriller" },
+                    { 21, "Travel" },
+                    { 22, "Young Adult" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -326,19 +312,9 @@ namespace BookStoreApi.DataContext.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Books_UserId1",
-                table: "Books",
-                column: "UserId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Comments_BookId",
                 table: "Comments",
                 column: "BookId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_BookId1",
-                table: "Comments",
-                column: "BookId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_UserId",

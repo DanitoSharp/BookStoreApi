@@ -1,11 +1,39 @@
 {
   "Version": 1,
-  "Hash": "PLVpluFIjWyUCE9SnDqEN47jhrM6I7OrcbU1GJ1sQ84=",
+  "Hash": "jIzWKsREDzDcw10oYqPBHuJCweslUrjvkZ0bizufEOo=",
   "Source": "BookStoreApi",
   "BasePath": "_content/BookStoreApi",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "BookStoreApi\\wwwroot",
+      "Source": "BookStoreApi",
+      "ContentRoot": "C:\\Users\\Daniel Ekeleme\\Documents\\Dotnet\\WebApi\\BookStoreApi\\wwwroot\\",
+      "BasePath": "_content/BookStoreApi",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Daniel Ekeleme\\Documents\\Dotnet\\WebApi\\BookStoreApi\\wwwroot\\images\\book-cover-photos\\2de2475c-fb2b-4a4c-91f1-7f25f3558fa0.jpg",
+      "SourceId": "BookStoreApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Daniel Ekeleme\\Documents\\Dotnet\\WebApi\\BookStoreApi\\wwwroot\\",
+      "BasePath": "_content/BookStoreApi",
+      "RelativePath": "images/book-cover-photos/2de2475c-fb2b-4a4c-91f1-7f25f3558fa0.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\book-cover-photos\\2de2475c-fb2b-4a4c-91f1-7f25f3558fa0.jpg"
+    }
+  ]
 }

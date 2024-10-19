@@ -28,6 +28,13 @@ namespace BookStoreApi.Controllers
 
             return Ok(item);
         }
+        [HttpGet("Upload-User-Profile-Photo")]
+        public IActionResult UploadProfilePhoto(IFormFile file)
+        {
+            //to be implemented
+
+            return Ok("Coming soon");
+        }
         
     }
 }

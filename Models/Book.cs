@@ -9,12 +9,12 @@ namespace BookStoreApi.Models;
 
 public class Book
 {
-    [NotMapped]
-    private readonly ApplicationDbContext Dbcontext;
-    public Book(ApplicationDbContext _Db)
-    {
-        Dbcontext = _Db ?? throw new ArgumentNullException(nameof(_Db));
-    }
+    // [NotMapped]
+    // private readonly ApplicationDbContext Dbcontext;
+    // public Book(ApplicationDbContext _Db)
+    // {
+    //     Dbcontext = _Db ?? throw new ArgumentNullException(nameof(_Db));
+    // }
 
 
 
@@ -25,25 +25,22 @@ public class Book
     public required string Author { get; set; }
     public decimal Price { get; set; }
     
-    public IEnumerable<Comments>? Comments { get{
-        return Dbcontext.Comments.Where(c => c.BookId == this.Id)
-        .Select(c => c).ToList();
-    } set{
-        Comments = value;
-    } }
+    public List<Comments>? Comments{get; set;}
 
-
-    public int Likes { get{
-        return Likes;
-    } set{
-        Likes = value <= 0 ? 0 : value;
-    } }
+    private int likes {get; set;} = 0;
+    public int Likes 
+    {
+        get{ return likes; }
+        set{ likes = likes <= 0 ? 0 : value ; }
+    }
     
-    public int DisLikes { get{
-        return DisLikes;
-    } set{
-        DisLikes = value <= 0 ? 0 : value;
-    } }
+    
+    private int dislikes { get; set;} = 0;
+    public int DisLikes
+    { 
+        get{ return dislikes; }
+        set{ dislikes = dislikes <= 0 ? 0 : value;}
+    }
 
     public string? UserId { get; set; }
     public User? User { get; set; }
@@ -51,7 +48,7 @@ public class Book
     public int GenreId { get; set; }
     public Genre? Genre { get; set; }
 
-    public DateTime DateAdded { get; set; }
+    public DateTime DateAdded { get; set; } = DateTime.Now;
 
     public void AddLike()
     {

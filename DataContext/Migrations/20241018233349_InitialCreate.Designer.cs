@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookStoreApi.DataContext.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240921235439_initialCreate")]
-    partial class initialCreate
+    [Migration("20241018233349_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,16 +59,11 @@ namespace BookStoreApi.DataContext.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId1")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GenreId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Books");
                 });
@@ -86,9 +81,6 @@ namespace BookStoreApi.DataContext.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("BookId1")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("TEXT");
 
@@ -101,8 +93,6 @@ namespace BookStoreApi.DataContext.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");
-
-                    b.HasIndex("BookId1");
 
                     b.HasIndex("UserId");
 
@@ -186,52 +176,52 @@ namespace BookStoreApi.DataContext.Migrations
                         },
                         new
                         {
-                            Id = 14,
+                            Id = 13,
                             Name = "Literary Fiction"
                         },
                         new
                         {
-                            Id = 15,
+                            Id = 14,
                             Name = "Memoir"
                         },
                         new
                         {
-                            Id = 16,
+                            Id = 15,
                             Name = "Mystery"
                         },
                         new
                         {
-                            Id = 17,
+                            Id = 16,
                             Name = "Romance"
                         },
                         new
                         {
-                            Id = 18,
+                            Id = 17,
                             Name = "Science"
                         },
                         new
                         {
-                            Id = 19,
+                            Id = 18,
                             Name = "Science Fiction"
                         },
                         new
                         {
-                            Id = 20,
+                            Id = 19,
                             Name = "Self-Help"
                         },
                         new
                         {
-                            Id = 21,
+                            Id = 20,
                             Name = "Thriller"
                         },
                         new
                         {
-                            Id = 22,
+                            Id = 21,
                             Name = "Travel"
                         },
                         new
                         {
-                            Id = 23,
+                            Id = 22,
                             Name = "Young Adult"
                         });
                 });
@@ -448,13 +438,8 @@ namespace BookStoreApi.DataContext.Migrations
                         .IsRequired();
 
                     b.HasOne("BookStoreApi.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("BookStoreApi.Models.User", null)
                         .WithMany("Cart")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Genre");
 
@@ -464,19 +449,14 @@ namespace BookStoreApi.DataContext.Migrations
             modelBuilder.Entity("BookStoreApi.Models.Comments", b =>
                 {
                     b.HasOne("BookStoreApi.Models.Book", "Book")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookStoreApi.Models.Book", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("BookId1");
-
                     b.HasOne("BookStoreApi.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Book");
 

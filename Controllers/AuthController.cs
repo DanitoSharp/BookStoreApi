@@ -37,9 +37,9 @@ namespace BookStoreApi.Controllers
 
                 var user = new User()
                 {
-                    UserName = model.UserName,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
+                    UserName = model.Email,
                     Email = model.Email,
                     DateOfBirth = model.DateOfBirth
                 };
@@ -66,9 +66,14 @@ namespace BookStoreApi.Controllers
         {
             try
             {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    return Unauthorized("User not found!");
+                }
 
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
-
+                
                 if (result.Succeeded)
                 {
                     var authClaims = new[]
@@ -94,7 +99,7 @@ namespace BookStoreApi.Controllers
                     });
                 }
 
-                return Unauthorized();
+                return Unauthorized(result.Succeeded);
 
             }
             catch (Exception ex)
@@ -103,56 +108,55 @@ namespace BookStoreApi.Controllers
             }
         }
 
-        [HttpPost("ForgotPassword")]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordDTO ForgotPasswordEmail)
-        {
-            var user = await _userManager.FindByEmailAsync(ForgotPasswordEmail.Email);
-            if (user == null)
-            {
-                // Optionally, return a generic response to avoid leaking user existence information
-                return Ok("If the email exists, a reset link has been sent.");
-            }
+        // [HttpPost("ForgotPassword")]
+        // public async Task<IActionResult> ForgotPassword(ForgotPasswordDTO ForgotPasswordEmail)
+        // {
+        //     var user = await _userManager.FindByEmailAsync(ForgotPasswordEmail.Email);
+        //     if (user == null)
+        //     {
+        //         // Optionally, return a generic response to avoid leaking user existence information
+        //         return Ok("If the email exists, a reset link has been sent.");
+        //     }
 
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        //     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            var resetLink = Url.Action("ResetPassword", "Account",
-                new { token, email = ForgotPasswordEmail.Email }, Request.Scheme);
+        //     var resetLink = Url.Action("ResetPassword", "Account",
+        //         new { token, email = ForgotPasswordEmail.Email }, Request.Scheme);
 
-            // Send email with the reset link (this could be using any email service like SendGrid)
-            await EmailSender.SendResetPasswordEmail(ForgotPasswordEmail.Email, resetLink!);
+        //     // Send email with the reset link (this could be using any email service like SendGrid)
+        //     await EmailSender.SendResetPasswordEmail(ForgotPasswordEmail.Email, resetLink!);
 
-            return Ok("If the email exists, a reset link has been sent.");
-        }
+        //     return Ok("If the email exists, a reset link has been sent.");
+        // }
 
-        [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
-        {
-            var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
-            if (user == null)
-            {
-                return BadRequest("Invalid request.");
-            }
+        // [HttpPost("reset-password")]
+        // public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
+        // {
+        //     var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
+        //     if (user == null)
+        //     {
+        //         return BadRequest("Invalid request.");
+        //     }
 
-            var result = await _userManager.ResetPasswordAsync(user, resetPasswordDto.Token, resetPasswordDto.NewPassword);
-            if (result.Succeeded)
-            {
-                return Ok("Password has been reset successfully.");
-            }
+        //     var result = await _userManager.ResetPasswordAsync(user, resetPasswordDto.Token, resetPasswordDto.NewPassword);
+        //     if (result.Succeeded)
+        //     {
+        //         return Ok("Password has been reset successfully.");
+        //     }
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError("", error.Description);
-            }
+        //     foreach (var error in result.Errors)
+        //     {
+        //         ModelState.AddModelError("", error.Description);
+        //     }
 
-            return BadRequest(ModelState);
-        }
+        //     return BadRequest(ModelState);
+        // }
     }
 
 
 
     public class RegisterModel
     {
-        public required string UserName { get; set; }
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
         public required DateOnly DateOfBirth { get; set; } //"dateOfBirth": "1997-06-12"
@@ -162,22 +166,22 @@ namespace BookStoreApi.Controllers
 
     public class LoginModel
     {
-        [EmailAddress] public required string Email { get; set; }
+        public required string Email { get; set; }
         public required string Password { get; set; }
     }
 
-    public record class ForgotPasswordDTO(
-        [Required][EmailAddress] string Email
-    );
+    // public record class ForgotPasswordDTO(
+    //     [Required] string Email
+    // );
 
 
-    public record class ResetPasswordDto
-    (
-        [Required] string Email,
+    // public record class ResetPasswordDto
+    // (
+    //     [Required] string Email,
 
-        [Required] string Token,
+    //     [Required] string Token,
 
-        [Required] [MinLength(8)] string NewPassword
-    );
+    //     [Required] [MinLength(8)] string NewPassword
+    // );
 
 }

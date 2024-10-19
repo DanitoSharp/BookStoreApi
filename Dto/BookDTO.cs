@@ -8,6 +8,5 @@ public record class BookDTO(
     [Required]string Description,
     [Required]string Author,
     decimal Price,
-    [Required]int GenreId,
-    string UserId
+    [Required]int GenreId
 );

@@ -16,7 +16,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
     {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookStore.API", Version = "v1" });
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookStoreAPI", Version = "v1" });
 
         // Define the security scheme
         c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -43,13 +43,13 @@ builder.Services.AddSwaggerGen(c =>
         });
 });
 
+builder.Services.AddTransient<IBookRepository, BookRepository>();
+builder.Services.AddTransient<ICommentRepository, CommentRepository>();
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 var connectionStr = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddSqlite<ApplicationDbContext>(connectionStr);
 
-builder.Services.AddTransient<IBookRepository, BookRepository>();
-builder.Services.AddTransient<ICommentRepository, CommentRepository>();
-builder.Services.AddTransient<IEmailService, EmailService>();
 
 builder.Services.AddIdentity<User, IdentityRole>(
     options =>
@@ -82,7 +82,11 @@ builder.Services.AddAuthentication(options =>
 });
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+        //options.JsonSerializerOptions.WriteIndented = true; // Optional, for pretty-printing JSON
+    });
 
 var app = builder.Build();
 

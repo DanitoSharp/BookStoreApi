@@ -7,9 +7,6 @@ namespace BookStoreApi.DataContext;
 
 public class ApplicationDbContext : IdentityDbContext<User>
 {
-    public ApplicationDbContext()
-    {
-    }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
@@ -24,25 +21,25 @@ public class ApplicationDbContext : IdentityDbContext<User>
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Book>().HasOne(t => t.User) // Navigation property
-            .WithMany()                               // One user can have many todo items
-            .HasForeignKey(t => t.UserId)             // Foreign key
-            .OnDelete(DeleteBehavior.Cascade);
+        // modelBuilder.Entity<Book>().HasOne(t => t.User) // Navigation property
+        //     .WithMany()                               // One user can have many todo items
+        //     .HasForeignKey(t => t.UserId)             // Foreign key
+        //     .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<Book>().HasOne(t => t.Genre) // Navigation property
-            .WithMany()                               // One user can have many todo items
-            .HasForeignKey(t => t.GenreId)             // Foreign key
-            .OnDelete(DeleteBehavior.Cascade);
+        // modelBuilder.Entity<Book>().HasOne(t => t.Genre) // Navigation property
+        //     .WithMany()                               // One user can have many todo items
+        //     .HasForeignKey(t => t.GenreId)             // Foreign key
+        //     .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<Comments>().HasOne(t => t.User) // Navigation property
-            .WithMany()                               // One user can have many todo items
-            .HasForeignKey(t => t.UserId)             // Foreign key
-            .OnDelete(DeleteBehavior.Cascade);
+        // modelBuilder.Entity<Comments>().HasOne(t => t.User) // Navigation property
+        //     .WithMany()                               // One user can have many todo items
+        //     .HasForeignKey(t => t.UserId)             // Foreign key
+        //     .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<Comments>().HasOne(t => t.Book) // Navigation property
-            .WithMany()                                 // One user can have many todo items
-            .HasForeignKey(t => t.BookId)               // Foreign key
-            .OnDelete(DeleteBehavior.Cascade);
+        // modelBuilder.Entity<Comments>().HasOne(t => t.Book) // Navigation property
+        //     .WithMany()                                 // One user can have many todo items
+        //     .HasForeignKey(t => t.BookId)               // Foreign key
+        //     .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Genre>().HasData(
             new Genre()

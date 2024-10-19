@@ -20,8 +20,8 @@ namespace BookStoreApi.Controllers
         [HttpGet("GetAllBook")]
         public async Task<IActionResult> AllBooks()
         {
-            string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId is null) return BadRequest("User does not exist!");
+            // string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            // if (userId is null) return BadRequest("User does not exist!");
 
             var items = await Repo.GetAllBooks();
 
@@ -30,8 +30,8 @@ namespace BookStoreApi.Controllers
         [HttpGet("GetBookById/{id:int}")]
         public async Task<IActionResult> GetBookById(int id)
         {
-            string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId is null) return BadRequest("User does not exist!");
+            // string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            // if (userId is null) return BadRequest("User does not exist!");
 
             var items = await Repo.GetBooksById(id);
 
@@ -39,7 +39,7 @@ namespace BookStoreApi.Controllers
         }
 
         [Authorize]
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateBook(BookDTO book)
         {
             string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -47,7 +47,20 @@ namespace BookStoreApi.Controllers
 
             var item = await Repo.CreateBook(book, userId);
 
-            return CreatedAtAction(nameof(CreateBook), new { Id = item!.Id }, item);
+            return CreatedAtAction(nameof(GetBookById), new { Id = item!.Id }, new {
+                Id = item!.Id,
+                BookCover = item.BookCover,
+                Title = item.Title,
+                Description = item.Description,
+                Author = item.Author,
+                Price = item.Price,
+                Comments = item.Comments,
+                Likes = item.Likes,
+                DisLikes = item.DisLikes,
+                UserId = item.UserId,
+                Genre = item.Genre,
+                DateAdded = item.DateAdded
+            });
         }
 
         [Authorize]
@@ -60,7 +73,20 @@ namespace BookStoreApi.Controllers
 
             var item = await Repo.UpdateBook(id, book, userId);
 
-            return Ok(item);
+            return Ok(new {
+                Id = item!.Id,
+                BookCover = item.BookCover,
+                Title = item.Title,
+                Description = item.Description,
+                Author = item.Author,
+                Price = item.Price,
+                Comments = item.Comments,
+                Likes = item.Likes,
+                DisLikes = item.DisLikes,
+                UserId = item.UserId,
+                Genre = item.Genre,
+                DateAdded = item.DateAdded
+            });
 
         }
 
@@ -81,7 +107,7 @@ namespace BookStoreApi.Controllers
         }
 
         [HttpPost("{id:int}/upload-book-cover")]
-        public async Task<IActionResult> UploadBookCover([FromQuery]int id, [FromForm] IFormFile file)
+        public async Task<IActionResult> UploadBookCover(int id, IFormFile file)
         {
             
             var fileUrl = await Repo.UploadBookCover(id, file, Request);

@@ -56,16 +56,11 @@ namespace BookStoreApi.DataContext.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId1")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.HasIndex("GenreId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("Books");
                 });
@@ -83,9 +78,6 @@ namespace BookStoreApi.DataContext.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("BookId1")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("TEXT");
 
@@ -98,8 +90,6 @@ namespace BookStoreApi.DataContext.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BookId");
-
-                    b.HasIndex("BookId1");
 
                     b.HasIndex("UserId");
 
@@ -445,13 +435,8 @@ namespace BookStoreApi.DataContext.Migrations
                         .IsRequired();
 
                     b.HasOne("BookStoreApi.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("BookStoreApi.Models.User", null)
                         .WithMany("Cart")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Genre");
 
@@ -461,19 +446,14 @@ namespace BookStoreApi.DataContext.Migrations
             modelBuilder.Entity("BookStoreApi.Models.Comments", b =>
                 {
                     b.HasOne("BookStoreApi.Models.Book", "Book")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookStoreApi.Models.Book", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("BookId1");
-
                     b.HasOne("BookStoreApi.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Book");
 

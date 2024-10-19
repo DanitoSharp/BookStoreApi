@@ -13,7 +13,7 @@ public class Comments
     public int BookId { get; set; }
     public Book? Book { get; set; }
 
-    public string? UserId { get; set; }
+    public required string? UserId { get; set; }
     public User? User { get; set; }
 
     public DateTime DateAdded { get; set; } = DateTime.Now;

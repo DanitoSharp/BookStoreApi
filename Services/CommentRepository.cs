@@ -28,6 +28,9 @@ public class CommentRepository : ICommentRepository
             User = user
         };
 
+        var book = Dbcontext.Books.Find(comment.BookId);
+        book!.Comments!.Add(item);
+
         Dbcontext.Comments.Add(item);
         
         await SaveChanges();
@@ -38,9 +41,14 @@ public class CommentRepository : ICommentRepository
 
     public async Task<bool> Delete(int id, string userId)
     {
+        var comment = Dbcontext.Comments.Find(id); // gets the comment
+        var book = Dbcontext.Books.Find(comment!.BookId); //gets the book that's related to the comment
+        var deComment = book!.Comments!.FirstOrDefault( x => x.Id == id && x.UserId == userId); // specific comment in list
+        book!.Comments!.Remove(deComment!); //removes the comment in list
+
         await Dbcontext.Comments.Where( c => c.Id == id && c.UserId == userId)
         .Select(c => c)
-        .ExecuteDeleteAsync();
+        .ExecuteDeleteAsync(); //deletes the commemt completly from the database
 
         return await SaveChanges();
     }
@@ -72,6 +80,16 @@ public class CommentRepository : ICommentRepository
         };
 
         Dbcontext.Comments.Entry(item).CurrentValues.SetValues(updateComment);
+
+        var book = Dbcontext.Books.Find(item.BookId);
+        var commentInList = book!.Comments!.FirstOrDefault(x => x.Id == commentId && userId == x.UserId);
+        
+        commentInList!.Id = commentId;
+        commentInList.Body = comment.Body;
+        commentInList.BookId = comment.BookId;
+        commentInList.UserId = user!.Id;
+        commentInList.User = user;
+
 
         await SaveChanges();
 

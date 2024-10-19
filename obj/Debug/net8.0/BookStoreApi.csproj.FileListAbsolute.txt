@@ -140,3 +140,8 @@ C:\Users\Daniel Ekeleme\Documents\Dotnet\WebApi\BookStoreApi\obj\Debug\net8.0\re
 C:\Users\Daniel Ekeleme\Documents\Dotnet\WebApi\BookStoreApi\obj\Debug\net8.0\BookStoreApi.pdb
 C:\Users\Daniel Ekeleme\Documents\Dotnet\WebApi\BookStoreApi\obj\Debug\net8.0\BookStoreApi.genruntimeconfig.cache
 C:\Users\Daniel Ekeleme\Documents\Dotnet\WebApi\BookStoreApi\obj\Debug\net8.0\ref\BookStoreApi.dll
+C:\Users\Daniel Ekeleme\Documents\Dotnet\WebApi\BookStoreApi\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\Daniel Ekeleme\Documents\Dotnet\WebApi\BookStoreApi\bin\Debug\net8.0\SendGrid.dll
+C:\Users\Daniel Ekeleme\Documents\Dotnet\WebApi\BookStoreApi\bin\Debug\net8.0\StarkbankEcdsa.dll
+C:\Users\Daniel Ekeleme\Documents\Dotnet\WebApi\BookStoreApi\obj\Debug\net8.0\BookStoreApi.sourcelink.json
+C:\Users\Daniel Ekeleme\Documents\Dotnet\WebApi\BookStoreApi\bin\Debug\net8.0\BookStoreApi.staticwebassets.runtime.json
