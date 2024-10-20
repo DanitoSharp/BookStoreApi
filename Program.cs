@@ -99,13 +99,13 @@ app.UseSwaggerUI(c =>
     // c.RoutePrefix = string.Empty; // Set Swagger UI at the root (e.g., /swagger)
 });
 
+app.UseExceptionHandler("/error");
+
 app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
-
 
 app.UseStaticFiles();
 

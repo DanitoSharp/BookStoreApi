@@ -207,4 +207,16 @@ public class BookRepository : IBookRepository
 
         return fileUrl;
     }
+
+    public async Task<IEnumerable<Book>?> SearchBook(string search)
+    {
+        var books = await Dbcontext.Books.Where( c => c.Title.ToLower().Contains(search.ToLower())).ToListAsync();
+
+        if(!books.Any() || books is null)
+        {
+            return null;
+        }
+
+        return books;
+    }
 }

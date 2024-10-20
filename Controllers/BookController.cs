@@ -27,6 +27,22 @@ namespace BookStoreApi.Controllers
 
             return Ok(items);
         }
+
+        [HttpPost("Search")]
+        public async Task<IActionResult> SearchBook (string search)
+        {
+            var items = await Repo.SearchBook(search);
+
+            if(items is null)
+            {
+                return NotFound("Not Found, Try something else.");
+            }
+
+
+            return Ok(items);
+        }
+
+
         [HttpGet("GetBookById/{id:int}")]
         public async Task<IActionResult> GetBookById(int id)
         {

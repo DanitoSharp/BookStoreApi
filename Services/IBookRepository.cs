@@ -10,7 +10,9 @@ public interface IBookRepository
     
 
     //get all
-    Task<IEnumerable<Book>> GetAllBooks(); 
+    Task<IEnumerable<Book>> GetAllBooks();
+
+    Task<IEnumerable<Book>?> SearchBook(string search);
     //get by id
     Task<Book?> GetBooksById( int id); 
     //create
