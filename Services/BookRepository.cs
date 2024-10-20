@@ -123,7 +123,7 @@ public class BookRepository : IBookRepository
     {
         var item = await Dbcontext.Books.FindAsync(id);
         if (item is null) return false;
-        item.Likes = item.Likes++;
+        item.Likes++;
 
         Dbcontext.Books
         .Entry(item).CurrentValues.SetValues(item);

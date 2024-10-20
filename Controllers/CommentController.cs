@@ -16,6 +16,15 @@ namespace BookStoreApi.Controllers
         {
             CommentRepo = _CommentRepo;
         }
+
+        [HttpGet("AllComments")]
+        public async Task<IActionResult> AllComment()
+        {
+            var comments = await CommentRepo.AllComments();
+            return Ok(comments);
+        }
+
+
         //Create
         [Authorize]
         [HttpPost("WriteComment")]
@@ -25,10 +34,15 @@ namespace BookStoreApi.Controllers
             if (userId is null) return Unauthorized();
 
             var item = await CommentRepo.Create(comment, userId);
+
+            if(item is null)
+            {
+                return Unauthorized("Try again later.");
+            }
             return CreatedAtAction(nameof(GetSingleComment), new{ Id = item.Id}, item);//CreatedAtAction(nameof(Create));
         }
         
-        //Read
+        
         [HttpGet("GetBookComments/{bookId:int}")]
         public async Task<IActionResult> BookComments(int bookId)
         {
@@ -36,6 +50,8 @@ namespace BookStoreApi.Controllers
 
             return Ok(items);
         }
+
+
         [HttpGet("GetComment/{id:int}")]
         public async Task<IActionResult> GetSingleComment(int id)
         {
@@ -61,7 +77,7 @@ namespace BookStoreApi.Controllers
         }
         //Update
         [Authorize]
-        [HttpPost("UpdateComment/{id:int}")]
+        [HttpPost("UpdateComment/{commentId:int}")]
         public async Task<IActionResult> Update(int commentId, CommentUpdateDTO comment)
         {
             string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

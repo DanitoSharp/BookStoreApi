@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="DataContext\" />
-    <Folder Include="Mapping\" />
   </ItemGroup>
 
 </Project>

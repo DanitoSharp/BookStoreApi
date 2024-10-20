@@ -3,7 +3,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Common;
 using BookStoreApi.DataContext;
+using BookStoreApi.DataContext.Migrations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace BookStoreApi.Models;
 
@@ -25,21 +27,38 @@ public class Book
     public required string Author { get; set; }
     public decimal Price { get; set; }
     
-    public List<Comments>? Comments{get; set;}
+    public List<Comments> Comments{get; set;} = new List<Comments>();
 
     private int likes {get; set;} = 0;
     public int Likes 
     {
         get{ return likes; }
-        set{ likes = likes <= 0 ? 0 : value ; }
+        set{ 
+            if(value >= 0)
+            {
+                likes = value;
+            }
+            else{
+                likes = 0;
+            }
+        }
     }
-    
     
     private int dislikes { get; set;} = 0;
     public int DisLikes
     { 
-        get{ return dislikes; }
-        set{ dislikes = dislikes <= 0 ? 0 : value;}
+        get{ 
+            return dislikes;
+            }
+
+        set{
+            if(value >= 0){
+                dislikes = value;
+            }else
+            {
+                dislikes = 0;
+            }
+        }
     }
 
     public string? UserId { get; set; }

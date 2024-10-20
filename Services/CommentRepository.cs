@@ -17,9 +17,14 @@ public class CommentRepository : ICommentRepository
         Dbcontext = _DbContext;
         Manager = _Manager;
     }
-    public async Task<Comments> Create(CommentDTO comment, string userId)
+    
+    public async Task<Comments?> Create(CommentDTO comment, string userId)
     {
         var user = await Manager.FindByEmailAsync(userId);
+        if (user == null)
+        {
+            return null;
+        }
         var item = new Comments(){
             Body = comment.Body,
             BookId = comment.BookId,
@@ -29,9 +34,16 @@ public class CommentRepository : ICommentRepository
         };
 
         var book = Dbcontext.Books.Find(comment.BookId);
-        book!.Comments!.Add(item);
+        if(book is null)
+        {
+            return null;
+        }
 
         Dbcontext.Comments.Add(item);
+
+        book.Comments.Add(item);
+
+        Dbcontext.Books.Update(book);
         
         await SaveChanges();
 
@@ -39,15 +51,28 @@ public class CommentRepository : ICommentRepository
         return item;
     }
 
-    public async Task<bool> Delete(int id, string userId)
+    public async Task<bool?> Delete(int id, string userId)
     {
         var comment = Dbcontext.Comments.Find(id); // gets the comment
-        var book = Dbcontext.Books.Find(comment!.BookId); //gets the book that's related to the comment
-        var deComment = book!.Comments!.FirstOrDefault( x => x.Id == id && x.UserId == userId); // specific comment in list
-        book!.Comments!.Remove(deComment!); //removes the comment in list
+        if (comment is null)
+        {
+            return null;
+        }
+        var book = Dbcontext.Books.Find(comment.BookId); //gets the book that's related to the comment
+        
+        // if the book attached to the comment does not exist, delete the comment.
+        if (book is null)
+        {
+            Dbcontext.Comments.Where( c => c.Id == id).ExecuteDelete();
+
+            return await SaveChanges();
+        }
+        
+        book.Comments.RemoveAll(c => c.Id == id); //removes the comment in list
+
+        Dbcontext.Books.Update(book);
 
         await Dbcontext.Comments.Where( c => c.Id == id && c.UserId == userId)
-        .Select(c => c)
         .ExecuteDeleteAsync(); //deletes the commemt completly from the database
 
         return await SaveChanges();
@@ -108,5 +133,10 @@ public class CommentRepository : ICommentRepository
     {
         await Dbcontext.SaveChangesAsync();
         return true;
+    }
+
+    public async Task<IEnumerable<Comments>> AllComments()
+    {
+        return await Dbcontext.Comments.Include( x => x.Book).Select( x => x).AsNoTracking().ToListAsync();
     }
 }
